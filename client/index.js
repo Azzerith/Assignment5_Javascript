@@ -5,20 +5,6 @@ let books = [];
 
 const main = document.querySelector('main');
 
-// async function showBooks() {
-//     const books = await getBooks();
-//     const element = document.getElementById("books");
-//     books.forEach(book => {
-//         const tag_tr = document.createElement("tr");
-//         const tag_td = document.createElement("td");
-//         const data = document.createTextNode(books);
-//         tag_td.appendChild(data);
-//         tag_tr.appendChild(tag_td);
-//         element.appendChild(tag_tr);
-//     })
-// }
-// showBooks();
-
 const pageListMainContent = `<h2 class="text-2xl font-bold mb-4">Daftar Buku Perpustakaan</h2>
 
 <table class="min-w-full border border-gray-300">
@@ -71,7 +57,6 @@ const pageAddBookMainContent = `<h2 class="text-2xl font-bold mb-4">Tambah Buku<
 async function handleClickEditButton(bookId) {
     try {
         // Ambil data buku dari server berdasarkan id, simpan hasilnya ke variabel currentBook
-        // TODO: answer here
 
         const response = await fetch(`http://localhost:3333/books/${bookId}`);
         currentBook = await response.json();
@@ -88,10 +73,9 @@ async function handleClickDeleteButton(bookId) {
         // if (!confirmation) {
         //   return;
         // }
+        //panggil function deleteBook dengan parameter bookId
         await deleteBook(bookId)
 
-        //panggil function deleteBook dengan parameter bookId
-        // TODO: answer here
         loadPage();
     } catch (error) {
         console.log(error);
@@ -101,17 +85,8 @@ async function handleClickDeleteButton(bookId) {
 
 async function handleEditForm(event) {
     try {
-        event.preventDefault()
-
-        const book = {
-            title: document.getElementById('title').value,
-            author: document.getElementById('author').value,
-            year: parseInt(document.getElementById('year').value),
-            quantity: parseInt(document.getElementById('quantity').value)
-        }
-        await editBook(book);
         // gunakan preventDefault untuk mencegah browser melakukan reload halaman
-        // TODO: answer here
+        event.preventDefault()
 
         /* 
           Ambil data dari form, simpan ke dalam variabel book
@@ -123,13 +98,15 @@ async function handleEditForm(event) {
             quantity: 10,
           }
         */
-        // TODO: answer here
-
-        // panggil function editBook dengan parameter book
-        // TODO: answer here
-
+        const book = {
+                title: document.getElementById('title').value,
+                author: document.getElementById('author').value,
+                year: parseInt(document.getElementById('year').value),
+                quantity: parseInt(document.getElementById('quantity').value)
+            }
+            // panggil function editBook dengan parameter book
+        await editBook(book);
         currentBook = null;
-
         currentPage = 'home';
         loadPage();
     } catch (error) {
@@ -141,28 +118,24 @@ async function handleEditForm(event) {
 async function handleAddForm(event) {
     try {
         event.preventDefault()
-
+            /*
+              Ambil data dari form, simpan ke dalam variabel book
+              bentuknya seperti ini:
+              {
+                title: 'example judul',
+                author: 'example penulis',
+                year: 2020,
+                quantity: 10,
+              }
+            */
         const book = {
-            title: document.getElementById('title').value,
-            author: document.getElementById('author').value,
-            year: document.getElementById('year').value,
-            quantity: document.getElementById('quantity').value
-        }
+                title: document.getElementById('title').value,
+                author: document.getElementById('author').value,
+                year: document.getElementById('year').value,
+                quantity: document.getElementById('quantity').value
+            }
+            // panggil function addBook dengan parameter book
         await addBook(book);
-        /*
-          Ambil data dari form, simpan ke dalam variabel book
-          bentuknya seperti ini:
-          {
-            title: 'example judul',
-            author: 'example penulis',
-            year: 2020,
-            quantity: 10,
-          }
-        */
-        // TODO: answer here
-
-        // panggil function addBook dengan parameter book
-        // TODO: answer here
 
         currentPage = 'home';
         loadPage();
@@ -173,12 +146,10 @@ async function handleAddForm(event) {
 }
 
 function handleClickAddNav() {
-    currentPage = 'add';
     // ubah currentPage menjadi 'add'
-    // TODO: answer here
+    currentPage = 'add';
     loadPage();
 }
-
 // add event listener click tag a didalam li dengan function handleClickAddNav
 const navLinks = document.querySelectorAll('li a');
 navLinks.forEach((navLink) => {
@@ -246,15 +217,13 @@ async function loadPage() {
             main.innerHTML = pageEditBookMainContent;
 
             const form = document.querySelector('form');
-            let formInput = await generateEditFormInput()
-            form.innerHTML = formInput;
-
-
             /* 
               panggil function generateEditFormInput dan simpan hasilnya ke variabel formInput
               kemudian isi innerHTML dari form dengan formInput
             */
-            // TODO: answer here
+            let formInput = await generateEditFormInput()
+            form.innerHTML = formInput;
+
             break;
         case 'add':
             main.innerHTML = pageAddBookMainContent;
@@ -289,6 +258,10 @@ async function addBook(book) {
 
 async function editBook(book) {
     try {
+        /* 
+          ubah buku yang ada di http://localhost:3333/books/:id dengan method PUT
+          body yang dikirim adalah book yang dikirimkan sebagai parameter function
+        */
         await fetch(`http://localhost:3333/books/${currentBook.id}`, {
             method: "PUT",
             headers: {
@@ -296,11 +269,6 @@ async function editBook(book) {
             },
             body: JSON.stringify(book)
         });
-        /* 
-          ubah buku yang ada di http://localhost:3333/books/:id dengan method PUT
-          body yang dikirim adalah book yang dikirimkan sebagai parameter function
-        */
-        // TODO: answer here
     } catch (error) {
         console.log(error);
         console.log('Terjadi kesalahan saat mengubah buku');
