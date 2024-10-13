@@ -176,10 +176,10 @@ function generateRows(books) {
         books.forEach(book => {
             rows += `
             <tr class="book-item">
-            <td class="px-6 py-4 border-b">Judul Buku</td>
-            <td class="px-6 py-4 border-b">Penulis Buku</td>
-            <td class="px-6 py-4 border-b">Tahun Terbit</td>
-            <td class="px-6 py-4 border-b">Jumlah Stok</td>
+            <td class="px-6 py-4 border-b">${book.title}</td>
+            <td class="px-6 py-4 border-b">${book.author}</td>
+            <td class="px-6 py-4 border-b">${book.year}</td>
+            <td class="px-6 py-4 border-b">${book.quantity}</td>
             <td class="px-6 py-4 border-b text-center">
               <button class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickEditButton(BookId)">Edit</button>
               <button class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickDeleteButton(BookId)">Hapus</button>  
