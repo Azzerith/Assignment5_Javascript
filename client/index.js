@@ -73,6 +73,8 @@ async function handleClickEditButton(bookId) {
         // Ambil data buku dari server berdasarkan id, simpan hasilnya ke variabel currentBook
         // TODO: answer here
 
+        const response = await fetch(`http://localhost:3333/books/${bookId}`);
+        currentBook = await response.json();
         currentPage = 'edit';
         loadPage();
     } catch (error) {
@@ -104,8 +106,8 @@ async function handleEditForm(event) {
         const book = {
             title: document.getElementById('title').value,
             author: document.getElementById('author').value,
-            year: document.getElementById('year').value,
-            quantity: document.getElementById('quantity').value
+            year: parseInt(document.getElementById('year').value),
+            quantity: parseInt(document.getElementById('quantity').value)
         }
         await editBook(book);
         // gunakan preventDefault untuk mencegah browser melakukan reload halaman
@@ -287,7 +289,7 @@ async function addBook(book) {
 
 async function editBook(book) {
     try {
-        await fetch(`http://localhost:3001/students/${id}`, {
+        await fetch(`http://localhost:3333/books/${currentBook.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
