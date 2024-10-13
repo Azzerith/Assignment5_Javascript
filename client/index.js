@@ -86,6 +86,7 @@ async function handleClickDeleteButton(bookId) {
         // if (!confirmation) {
         //   return;
         // }
+        await deleteBook(bookId)
 
         //panggil function deleteBook dengan parameter bookId
         // TODO: answer here
@@ -98,6 +99,15 @@ async function handleClickDeleteButton(bookId) {
 
 async function handleEditForm(event) {
     try {
+        event.preventDefault()
+
+        const book = {
+            title: document.getElementById('title').value,
+            author: document.getElementById('author').value,
+            year: document.getElementById('year').value,
+            quantity: document.getElementById('quantity').value
+        }
+        await editBook(book);
         // gunakan preventDefault untuk mencegah browser melakukan reload halaman
         // TODO: answer here
 
@@ -188,8 +198,8 @@ function generateRows(books) {
             <td class="px-6 py-4 border-b">${book.year}</td>
             <td class="px-6 py-4 border-b">${book.quantity}</td>
             <td class="px-6 py-4 border-b text-center">
-              <button class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickEditButton(BookId)">Edit</button>
-              <button class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickDeleteButton(BookId)">Hapus</button>  
+              <button class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickEditButton(${book.id})">Edit</button>
+              <button class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickDeleteButton(${book.id})">Hapus</button>  
             </td>
           </tr>`;
         })
@@ -234,6 +244,9 @@ async function loadPage() {
             main.innerHTML = pageEditBookMainContent;
 
             const form = document.querySelector('form');
+            let formInput = await generateEditFormInput()
+            form.innerHTML = formInput;
+
 
             /* 
               panggil function generateEditFormInput dan simpan hasilnya ke variabel formInput
@@ -274,6 +287,13 @@ async function addBook(book) {
 
 async function editBook(book) {
     try {
+        await fetch(`http://localhost:3001/students/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(book)
+        });
         /* 
           ubah buku yang ada di http://localhost:3333/books/:id dengan method PUT
           body yang dikirim adalah book yang dikirimkan sebagai parameter function
@@ -287,11 +307,10 @@ async function editBook(book) {
 
 async function deleteBook(bookId) {
     try {
-        /* 
-          hapus buku yang ada di http://localhost:3333/books/:id dengan method DELETE
-          id buku yang akan dihapus dikirimkan sebagai parameter function
-        */
-        // TODO: answer here
+
+        await fetch(`http://localhost:3333/books/${bookId}`, {
+            method: "DELETE",
+        });
     } catch (error) {
         console.log(error);
         console.log('Terjadi kesalahan saat menghapus buku');
