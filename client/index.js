@@ -128,9 +128,15 @@ async function handleEditForm(event) {
 
 async function handleAddForm(event) {
     try {
-        // gunakan preventDefault untuk mencegah browser melakukan reload halaman
-        // TODO: answer here
+        event.preventDefault()
 
+        const book = {
+            title: document.getElementById('title').value,
+            author: document.getElementById('author').value,
+            year: document.getElementById('year').value,
+            quantity: document.getElementById('quantity').value
+        }
+        await addBook(book);
         /*
           Ambil data dari form, simpan ke dalam variabel book
           bentuknya seperti ini:
@@ -155,6 +161,7 @@ async function handleAddForm(event) {
 }
 
 function handleClickAddNav() {
+    currentPage = 'add';
     // ubah currentPage menjadi 'add'
     // TODO: answer here
     loadPage();
@@ -163,7 +170,7 @@ function handleClickAddNav() {
 // add event listener click tag a didalam li dengan function handleClickAddNav
 const navLinks = document.querySelectorAll('li a');
 navLinks.forEach((navLink) => {
-    // TODO: answer here
+    navLink.addEventListener('click', handleClickAddNav)
 });
 
 function generateRows(books) {
@@ -252,11 +259,13 @@ async function fetchBooks() {
 
 async function addBook(book) {
     try {
-        /* 
-          tambahkan buku baru ke http://localhost:3333/books dengan method POST
-          body yang dikirim adalah book yang dikirimkan sebagai parameter function
-        */
-        // TODO: answer here
+        await fetch("http://localhost:3333/books", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(book)
+        });
     } catch (error) {
         console.log(error);
         console.log('Terjadi kesalahan saat menambah buku');
