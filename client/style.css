@@ -1,0 +1,23 @@
+.ruangguru-blue {
+    background-color: #00b1c7;
+}
+
+.ruangguru-blue:hover {
+    background-color: #00859d;
+}
+
+.footer {
+    background-color: #f3f3f3;
+    padding: 16px;
+    text-align: center;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
